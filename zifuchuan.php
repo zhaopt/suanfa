@@ -75,8 +75,21 @@ echo iconv('GB2312', 'UTF-8', $str); //将字符串的编码从GB2312转到UTF-8
 ⑤比较运算符中两边都是字符串类型，从首个字符开始依次比较ASCII值，哪个大就停止后续比较。
 
 
-
-
+中文在utf8下占用3个字节
+function jiequ($str,$i,$len){
+   var_dump(mb_detect_encoding($str, "UTF-8,GB2312,GBK"));
+    for($j = $i;$j<$len;$j++){
+        if(ord(substr($str,$j,1))>127){
+            var_dump("ccc");
+            $newstr .= substr($str,$j,3);
+            $j = $j+2; //补数---------
+        }else{
+            $newstr .= substr($str,$j,1);
+        }
+    }
+    var_dump($newstr);
+}
+jiequ("就惊xdsf123a",0,8);
 
 
 
