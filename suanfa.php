@@ -43,6 +43,92 @@ function findStar2($arr,$n){
 findStar2([5,1,3,4,7,8,9],1);
 
 
+3.打印数字
+
+基本思路：
+分为偶数 奇数运算，循环边界和开始结束值
+n=3
+1*2*3
+7*8*9
+4*5*6
+0 对应 3,1 -- 123 
+2 对应 3,7 -- 789
+1 对应 3,4 -- 456
+n=5
+1*2*3*4*5
+11*12*13*14*15
+21*22*23*24*25
+16*17*18*19*20
+6*7*8*9*10
+
+0 对应 5,1 -- 1,2,3,4,5
+2 对应 5,11 -- 11 12 13 14 15
+4 对应 5,21 -- 21 22 23 24 25
+3 对应 5,16 -- 16 17 18 19 20
+1 对应 5,6 -- 6 7 8 9 10
+
+具体代码如下：
+<?php
+$i = 0;
+$n = 5;
+while($i<$n){
+    printshuzi($n,$i*$n+1);
+    $i += 2; //偶数计算
+}
+if($n%2==0){
+    $i = $n -1;//判断奇偶数
+}else{
+    $i = $n -2;
+}
+
+while($i>0){
+    printshuzi($n,$i*$n+1);
+    $i -= 2;
+}
+function printshuzi($n,$offset)
+{
+   $i = 0;
+   $len = $offset + $n;
+   for($i=$offset;$i<$len;$i++){
+        if($i <$len-1){
+            echo $i."*";
+        }else{
+            echo $i."\n";
+        }
+   }
+
+}
+
+
+3二分查找
+递归思路：
+
+<?php
+
+function erfen($arr,$left,$right,$key){
+    $len = count($arr);
+    $min = intval(($left+$right)/2);
+    for($i=0;$i<$len;$i++){
+        if($key == $arr[$min]){
+            return "yizhaodao weizhi". $min;
+        }elseif($key > $arr[$min]){
+            $left = $min+1;
+			return   erfen($arr,$left,$right,$key);
+        }else{
+            $right = $min-1;
+			return   erfen($arr,$left,$right,$key);
+        }
+    }
+    return   false;
+}
+
+var_dump(erfen([1,3,4,5,76,99],0,6,99));
+
+
+
+
+
+
 
 
 
