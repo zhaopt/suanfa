@@ -110,7 +110,7 @@ function erfen($arr,$left,$right,$key){
     $min = intval(($left+$right)/2);
     for($i=0;$i<$len;$i++){
         if($key == $arr[$min]){
-            return "yizhaodao weizhi". $min;
+            return "yizhaodao weizhi". $min; //重点
         }elseif($key > $arr[$min]){
             $left = $min+1;
 			return   erfen($arr,$left,$right,$key);
@@ -123,6 +123,187 @@ function erfen($arr,$left,$right,$key){
 }
 
 var_dump(erfen([1,3,4,5,76,99],0,6,99));
+
+4，求字符串的全排列
+思路 固定 n-3 n-2前面的数字 使得 n-1 n变换位置
+ 
+function quanpailie($str,$start,$end){
+
+   if($start == $end){
+     $result = [];
+     if(!in_array($str,$result)){
+          echo $str."\n";
+          $result[] = $str;
+
+     }else{
+      return false;
+     }
+
+   }else{
+     for($i=$start;$i<$end;$i++){
+        if($str[$i]!=$str[$i+1]){
+          $str = swap($str,$start,$i);
+          quanpailie($str,$start+1,$end);
+          $str = swap($str,$start,$i);
+        }
+     }
+   }
+
+  return $result;
+}
+function swap($str,$curet,$index){
+  $tmp = $str[$curet];
+  $str[$curet] = $str[$index];
+  $str[$index] = $tmp;
+  return $str;
+}
+var_dump(quanpailie("abc",0,3));
+5，将字符串转为整数
+$str1 = "abc1";
+$str2 = "1abc1";
+$abc = sprintf("%d",$str1); //0
+$abc = sprintf("%d",$str2); //1
+$abc = intval($str1);//0
+$abc = intval($strs);//1
+var_dump($abc);
+var_dump($str1 * 1); // 0
+var_dump($str2 * 1);//1
+var_dump((int)$str2);//1
+
+int > intval > sprintf
+6，判断字符串是否是整数
+
+$str="12312";
+var_dump(is_numeric($str));//判断是否是数值类型，有缺陷 空白字符也是正确的
+var_dump(is_int($str));//判断是否是整形
+var_dump(preg_match('/^\d*$/',$str));
+
+7，字符串反转
+思路1：
+从要替换的最大值边界向内依次递减
+
+function fanzhuanzifchuan($str, $start, $end){
+
+ //$arr = explode(",",$str);
+ $arr = str_split($str);//将字符串变为数组
+ //$arr = str_split($str,3);//以3个字符 分割为数组
+ $final = $end+1;//最后---
+ while($final > $start){//循环递减
+    $tmp = $arr[$start];//保存最小值 用于与最大值替换
+    for($j=$start+1;$j<$final;$j++){
+        $arr[$j-1] = $arr[$j];
+    }
+    $arr[$final-1] = $tmp;
+    $final--;
+ }
+ return $arr;
+}
+对称替换法
+思路找到中心点然后替换
+function duibanfanzhuan($str,$start,$end){
+        $arr = str_split($str);
+        $mid = ($end-$start)/2 + $start; //中心点 加上 开始 位置 就等于真实的中心点
+
+        for($i=0;$i<=$mid-$start;$i++){
+            swaps($arr,$start+$i,$end-$i);
+        }
+        var_dump($arr);
+}
+
+function swaps(&$arr,$ct,$index){
+  $tmp = $arr[$index];
+  $arr[$index] = $arr[$ct];
+  $arr[$ct] = $tmp;
+}
+
+duibanfanzhuan("abcdef",2,4);
+var_dump(fanzhuanzifchuan("abcdef",2,4)); ab edc f
+
+var_dump(implode(",",[1,2,3,4,5]));
+
+
+8，字符串旋转
+思路： 每次将 start元素 保留tmp然后，依次替换最后一位
+function zifcxz($str,$start,$end){
+   $arr = str_split($str);
+   $len = count($arr);
+   while($end--){
+       $tmp = $arr[$start];
+       for($i=$start;$i<$len;$i++){
+var_dump($arr[$i]);
+          $arr[$i] =$arr[$i+1];
+       }
+       $arr[$len-1] = $tmp;
+   }
+   var_dump($arr);
+}
+zifcxz("abcde",0,3); deabc
+
+abcde aebcd
+
+9.判断是否为回文字串
+思路 寻找中心点 然后 依次比较 最小 最大值
+function huiwen($str){
+
+  $len = strlen($str);
+  $min = $len/2 + 1;
+
+$arr = str_split($str);
+  for($i=0;$i<$min;$i++){
+      if($arr[$i] != $arr[$len-$i-1]){
+        return "bs";
+      }
+  }
+
+}
+var_dump(huiwen("abcba"));
+
+10.求最大回文字串
+
+
+
+
+11.求字符串包含问题
+
+
+
+12.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
