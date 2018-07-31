@@ -265,7 +265,25 @@ var_dump(huiwen("abcba"));
 
 11.求字符串包含问题
 
+思路1： 暴力循环，外层为 小字符串，内存为大字符串，判断不相等的值 是否等于 大字符串的长度，
+如果相等则不包含
 
+$str1 = "abbba";
+$str2 = "ba";
+
+for($i=0;$i<strlen($str2);$i++){
+   $bd=0;
+    for($j=0;$j<strlen($str1);$j++){
+        if($str1[$i]!= $str2[$j]){
+                $bd++;
+        }
+    }
+   if($bd == strlen($str)){
+     var_dump("都不嫌等");
+   }
+}
+
+var_dump($bd);
 
 12.
 
