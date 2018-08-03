@@ -258,6 +258,25 @@ $arr = str_split($str);
 }
 var_dump(huiwen("abcba"));
 
+function huiwen($str){
+
+  $len = strlen($str)-1;
+  $mid = $len/2;
+  $ishui = true;
+  for($i=0;$i<$mid;$i++){
+     if($str[$i] != $str[$len-$i]){
+        var_dump("不是回文");
+$ishui=false;
+     }
+  }
+  if($ishui){
+    var_dump("是回文啊老铁");
+  }
+}
+huiwen("abba");
+huiwen("abcba");
+huiwen("abbbcbbba");
+
 10.求最大回文字串
 
 
