@@ -1,0 +1,509 @@
+1.实现栈
+
+栈是 先进后出，即后进先出
+
+思路：已数组为基础，对数组键值以正序添加 以倒序取出即可
+
+class Stack{
+
+   private $size = 0;//这个是数组索引
+   private $array = [];
+
+   public function __construct($int = 0)
+   {    
+        $this->array[$int] = 0;
+   }
+
+   public function put($item)
+   {    
+        $this->array[$this->size++] = $item;
+   }
+
+   public function peek()
+   {   
+       if($this->size == 0){
+           throw new exception("zhanweikong");
+       }
+       return $this->array[$this->size -1];
+   }
+   public function pop()
+   {    
+        $item = $this->peek();
+        $this->size--;
+        return $item;
+   }
+
+   public function size()
+   {
+        return $this->size;
+   }
+   public function isEmpty()
+   {
+        if($this->size == 0){
+           return true;
+        }
+        return false;
+   }
+}
+
+$stack = new Stack();
+
+$stack->put(12);
+$stack->put(13);
+$stack->put(14);
+var_dump($stack->pop());
+2.2个栈实现一个队列
+思路 
+一个栈A写入数据，并pop取出写入另一个栈B,然后再从B弹出数据
+
+
+class Qu{
+
+  public function __construct()
+  {
+     $this->stack1 = new Stack();
+     $this->stack2 = new Stack();
+  }
+
+  public function put($value)
+  {
+    $this->stack1->put($value);
+  }
+  public function pop()
+  {
+  //判断栈2是否已用完
+       if(!$this->stack2->isempty()){
+            return $this->stack2->pop();
+       }else{
+
+          while(!$this->stack1->isempty()){
+             $this->stack2->put($this->stack1->pop());
+          }
+           return $this->stack2->pop();
+      }
+  }
+  public function size()
+  {
+		return $this->stack1->size() + $this->stack2->size();
+  }
+}
+
+$Qu = new Qu();
+$Qu->put(1);
+$Qu->put(2);
+$Qu->put(3);
+             
+var_dump($Qu->pop());
+
+3.两个队列实现栈
+
+思路 
+
+插入时 如果队列1不为空那么向队列1赋值，
+ 
+弹出时 如果队列2 为空那么将队列1的值压向，要剩下最后一个元素,
+      然后pop
+从而形成栈  先进后出， 后进先出
+
+示例 ： 1  2  3 依次插入
+    插入队列2 时  ； 1 2，
+    剩余 3,
+
+	这个时候弹出3	  
+    依次类推
+	弹出2
+	弹出1
+
+class Quququ{
+  
+   private $head = 0;
+   private $tail = 0;
+   private $array = null;
+   public function __construct()
+   {
+   }
+   public function put($item){
+      $this->array[$this->tail++] = $item;
+   }
+   public function pop()
+   {
+     // return  array_shift($this->array);
+     if($this->head == $this->tail){
+        return null;
+     }
+     $item = $this->array[$this->head];
+     $this->array[$this->head] = null;
+     $this->head++;
+     return $item;
+   }
+   public function size()
+   {
+      if($this->tail >= $this->head){
+		return $this->tail-$this->head;
+      }else{
+      	return $this->tail+count($this->array) - $this->head;
+      }
+   }
+   public function isEmpty()
+   {
+      return $this->head == $this->tail;
+   }
+}
+
+$quque = new Quququ();
+
+$quque->put(1);
+$quque->put(2);
+$quque->put(3);
+
+
+class Stack2{
+
+
+    public function __construct()
+    {
+	$this->qu1 = new Quququ();
+        $this->qu2 = new Quququ();
+    }
+   
+    public function put($value){
+
+    	if($this->qu1->isEmpty()){
+            $this->qu1->put($value); //5
+        }else{ 
+			$this->qu2->put($value); // 6 7 8
+        }
+    }
+
+    public function pop()
+    {
+    	if($this->qu2->isEmpty()){
+				while($this->qu1->size()>1){
+                    $this->qu2->put($this->qu1->pop());
+                }
+                return $this->qu1->pop();
+        }else{
+				while($this->qu2->size()>1){
+                    $this->qu1->put($this->qu2->pop()); //6 7
+                }
+				return $this->qu2->pop(); //7
+        }
+    }
+
+
+}
+$st = new Stack2();
+$st->put(5);
+$st->put(6);
+$st->put(7);
+
+var_dump($st->pop());
+var_dump($st->pop());
+var_dump($st->pop());
+
+3.单向链表
+
+链表 包括 结点 和链表 两部分
+插入包含
+头插入（将新插入的结点变为头结点，指针指向原先的结点）
+尾插入（当链表为空时，尾插入就是头插入，新插入的元素变为尾元素，之前的元素设置next指向新插入的尾元素） 
+
+指定位置插入（需要插入的值，插入的下标）
+删除包含
+
+头删除 first = $tmp->getNext();之前的结点变为null
+尾删除
+指定位置删除
+
+首先建立头结点
+然后增加 结点长度
+class Node{
+
+    private $data;
+    private $next;
+
+    public function getData()
+    {
+	return $this->data;
+    }
+
+    public function setData($data)
+    {
+        $this->data = $data;
+    }
+
+    public function getNext()
+    {
+	return $this->next;
+    }
+    public function setNext(Node $next)
+    {
+	$this->next = $next;
+    }
+}
+
+
+
+class Link{
+  
+    private $size = 0;
+    private $first = null;
+    private $last = null;
+  
+ 
+    public function addLast($data)
+    {
+		if($this->size ==0){
+			$this->fillStart($data);
+        }else{
+			$node = new Node();
+            $node->setData($data);
+            $node->setNext($this->first);
+            $this->first = $node;
+        } 
+        $size++;
+    }
+    //头结点插入 
+    public function addFirst($data)
+    {
+		if($this->size ==0){
+           $this->fillStart($data);
+        }else{
+	       $node = new Node();
+           $node->setData($data);
+           $node->setNext($this->first);
+           $this->first = $node;
+        }
+        $this->size++;
+    }
+	
+	//指定位置插入
+    public function add($data, $index)
+    {
+		if($this->size > $index){
+		     //如果链表长度为0
+      	     if($this->size == 0){
+                 $this->fillStart($data);
+                 $this->size++;
+             }elseif($index == 0){
+                 $this->addFirst($data);
+             }elseif($this->size == $index+1){
+				$this->addLast($data);
+             }else{
+				$tmp = $this->get($index);
+                $node = new Node();
+                $node->setData($data);
+                $node->setNext($tmp->getNext());
+                $tmp->setNext($node);
+                $this->size++;
+             }
+        }else{
+	     throw new Exception("wrongle");
+        }
+    }
+
+    public function removeFirst()
+    {
+		if($this->size ==0){
+             throw new Exception("lianbiaoweikonglea ");
+        }elseif($this->size == 1){
+			 $this->clear();
+        }else{
+			 $tmp = $this->first;
+             $this->first = $tmp->getNext();
+             $tmp = null;
+             $this->size--;
+        }
+        
+    } 
+    public function removeLast()
+    {
+	    if($this->size == 0){
+		   throw new Exception("lianbiaokonglea");
+        }elseif($this->size == 1){
+	       $this->clear();
+        }else{
+	         $tmp = $this->get($this->size-2);
+            $tmp->setNext(null);
+            $this->size--;
+        }
+   }
+   public function removeMiddle($index)
+   {
+       if($this->size == 0){
+       	   throw new Exception("lianbiaokonglea");
+       }elseif($this->size == 1){
+           $this->clear();
+       }else{
+		    if($index == 0){
+				 $this->removeFirst();
+			}elseif($this->size == $index-1){
+			     $this->removeLast();
+			}else{
+				$tmp = $this->get($index-1);
+				$next = $tmp->getNext();
+				$tmp->setNext($next->getNext());
+				$next = null;
+				$this->size--;
+			}
+       }
+   }   
+   public function get($index){
+		$tmp = $this->first;
+        for($i=0;$i<$index;$i++){
+			$tmp = $tmp->getNext();
+        }
+        return $tmp;
+   }
+
+   public function printAll()
+   {
+		$tmp = $this->first;
+        for($i=0;$i<$this->size-1;$i++){
+		$tmp = $tmp->getNext();
+                var_dump($tmp->getData());
+        }
+   }
+
+   public function size()
+   {
+	return $this->size;
+   }
+   //头结点插入，
+   public function fillStart($data)
+   {
+		$this->first = new Node();
+        $this->first->setData = $data;
+        $this->last = $this->first;
+
+   }
+  
+   public function clear()
+   {
+		$this->first = null;
+        $this->last = null;
+        $this->size = 0;
+   }
+}
+
+$link = new Link();
+
+$link->addFirst(2);
+$link->addFirst(1);
+$link->addFirst(3);
+$link->add(3,1); //
+$link->printAll();
+
+4，反转链表
+思路 让指针反转
+public function reverse()
+{
+	$tmp = $this->first;
+	$last = $tmp;
+	$next = $this->first->getNext(); //first的下一个
+	for($i=0;$i<$this->size-1;$i++){
+		$nextNext = $next->getNext();//下下个
+		$next->setNext($tmp);
+		$tmp = $next;
+		$next = $nextNext;
+	}
+	$last->setNext(null);
+	$this->first = $tmp;
+}
+
+5.汉诺塔的实现
+ABC 从A移动到C上
+思路：
+
+将n-1个元素从A移动到B
+将第n个元素从A移动到C
+将n-1个元素从B移动到C
+
+<?php
+class HanoTest{
+    
+    public function hano($n,$a,$b,$c)
+    {   
+        if($n ==1 ){
+          $this->move($a,$c);
+          return ;
+        }
+        $this->hano($n-1,$a,$c,$b);
+        $this->move($a,$c);
+        $this->hano($n-1,$b,$a,$c);
+    }
+    
+    public function move($a,$c)
+    {   
+        var_dump($a."-->".$c);
+    }
+}
+
+$hn = new HanoTest();
+
+$hn->hano(4,'A','B','C');
+
+
+function hanota($n,$a,$b,$c){
+   global $step;
+   if($n==1){
+      $step++;
+      echo "将原盘{$n}从{$a}移动{$c} \n";  最后 从a移动到C
+      return ;
+   }else{
+      //先把A上n-1个圆盘移动到B上
+      hanota($n-1,$a,$c,$b);
+      $step++;
+      echo "将圆盘{$n}从 {$a} 移动到 {$c}上 \n";
+      //把B上的n-1个圆盘移动到C上
+      hanota($n-1,$b,$a,$c);
+   }
+
+}
+hanota(4,'A','B','C');
+echo $step;
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
