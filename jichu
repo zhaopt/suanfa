@@ -462,9 +462,67 @@ function hanota($n,$a,$b,$c){
 }
 hanota(4,'A','B','C');
 echo $step;
-?>
 
 
+
+1.递归
+
+递去
+归来 
+
+二维数组查找
+递归思路：
+通过 return 双向的增长实现
+关键点 return diguichazhao($i+1,$j,$arr,$key)||diguichazhao($i,$j+1,$arr,$key);
+
+从而实现 0,1 0,2 1,1 1,2 查找
+$arr = [[1,2,3],[4,5,6]];
+var_dump($arr);
+function a(){
+ return 1||2;
+}
+var_dump(a());
+function diguichazhao($i,$j,$arr,$key){
+   $len = count($arr);
+   $lie = count($arr[0]);
+
+#echo "<pre>";print_r(debug_backtrace()); 通过debug清晰知道 递归过程
+   if($i == $len || $j == $lie){
+        return false;
+   }
+   if($arr[$i][$j] == $key){
+#var_dump($i,$j);
+        return true;
+   }
+   
+   if($key < $arr[$i][$j]){
+        return false;
+   }
+
+   return diguichazhao($i+1,$j,$arr,$key)||diguichazhao($i,$j+1,$arr,$key); //先对参数赋值 在进行递归操作
+}
+
+
+循环方法：
+两次循环 外层负责循环次数，内层负责比较运算
+for($i=0;$i<count($arr);$i++){
+    for($j=0;$j<count($arr[0]);$j++){
+        if($arr[$i][$j] == $tmp){
+           var_dump($j,$i);
+           //return true;
+           break;
+        }
+    }
+}
+
+
+echo "111111";
+
+
+
+
+@@
+2进制 8进制 10进制 16进制
 
 
 
