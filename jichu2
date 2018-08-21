@@ -1,0 +1,67 @@
+1.两个栈实现一个队列
+
+栈 先进后出
+
+队列 先进先出
+
+思路  2个栈 ，栈1作为入队列 栈2 作为出队列
+
+符合 先进先出
+   public function push($value)
+   {
+        $this->stack1->push($value);
+   }    
+   public function pop()
+   {
+       while($this->stack1->isEmpty()){
+           $this->stack2->push($this->stack1->pop());
+       }   
+       
+       return $this->stack2->pop();
+   }   
+
+2.两个队列实现栈
+
+一个队列负责 入队， 另一个队列负责出队
+
+队1的所有值除最后一个外其他全部 入到 队列2,此时队一为空，
+由队2取出所有元素除最后一个 入队一，循环不止
+核心代码：
+  public function push($value)
+   {   
+       if($this->que2->isEmpty()){
+            $this->que1->push($value);
+       }else{
+            $this->que2->push($value);
+       }
+   }
+
+   public function pop()
+   {    
+        if($this->que2->isEmpty()){
+                while($this->que1->size() >1){
+                   $this->que2->push($this->que1->pop());
+                }
+                
+                return $this->que1->pop();
+        }else{  
+                while($this->que2->size() > 1){
+                        $this->que1->push();
+                }
+                return $this->que2->pop();
+        }
+   }
+   
+3.链表
+
+ 首先链表结点
+
+ 
+   
+   
+   
+   
+   
+   
+   
+   
